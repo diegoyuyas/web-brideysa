@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Portal Admin - Victoria Vásquez v3.1 - Auto Compresión</title>
+<title>Portal Admin - Brideysa</title>
 <style>
 :root{--cream:#FFFBF5;--teal:#14A89C;--line:#EDE3D6;--charcoal:#1A1A1A}
 *{box-sizing:border-box;margin:0;padding:0}body{font-family:Inter,sans-serif;background:var(--cream);color:var(--charcoal)}
@@ -29,15 +29,17 @@ textarea{min-height:70px;resize:vertical}
 </style>
 </head>
 <body>
-<div class="header"><strong>Victoria Vásquez - Admin v3.1 (Compresión Auto)</strong><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn btn-ghost" onclick="importar()">Importar JSON</button> <button class="btn btn-ghost" onclick="copiar()">Copiar JSON</button> <button class="btn btn-teal" onclick="exportar()">Exportar data.json</button></div></div>
+<div id="login" style="position:fixed;inset:0;background:#FFF8FB;z-index:99;display:grid;place-items:center;padding:16px"><div class="card" style="width:340px;max-width:100%"><div style="text-align:center"><img src="assets/img/logo.png" alt="Brideysa" width="110"></div><h2 style="text-align:center;margin-top:8px">Acceso administrador</h2><label>Usuario</label><input id="lg-user" autocomplete="username" value="admin"><label>Contraseña</label><input id="lg-pass" type="password" autocomplete="current-password" onkeydown="if(event.key==='Enter')login()"><p id="lg-msg" class="small" style="color:#c0392b;margin-top:8px"></p><button class="btn btn-teal" style="width:100%;margin-top:10px" onclick="login()">Ingresar</button></div></div>
+<div id="toast" style="position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#14295F;color:#fff;padding:12px 18px;border-radius:12px;display:none;z-index:100;max-width:90%"></div>
+<div class="header"><strong>Brideysa - Panel de administración</strong><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn btn-ghost" onclick="importar()">Importar JSON</button> <button class="btn btn-ghost" onclick="copiar()">Copiar JSON</button> <button class="btn btn-ghost" onclick="exportar()">Descargar cambios</button> <button class="btn btn-teal" onclick="publicar()">🚀 Subir cambios</button> <button class="btn btn-ghost" onclick="cambiarClave()">🔑 Contraseña</button> <button class="btn btn-ghost" onclick="salir()">Salir</button></div></div>
 <div class="layout">
 <div class="sidebar">
 <h3>Secciones</h3>
 <button class="active" onclick="show('hero')" id="b-hero">Inicio / Hero</button>
-<button onclick="show('carrusel')" id="b-carrusel">📸 Carrusel Dra. Victoria</button>
+<button onclick="show('carrusel')" id="b-carrusel">📸 Carrusel</button>
 <button onclick="show('fondo')" id="b-fondo">🎨 Fondo Transparente</button>
 <button onclick="show('trust')" id="b-trust">Barra Confianza</button>
-<button onclick="show('servicios')" id="b-servicios">Servicios</button>
+<button onclick="show('servicios')" id="b-servicios">Productos</button>
 <button onclick="show('nosotros')" id="b-nosotros">Nosotros</button>
 <button onclick="show('contacto')" id="b-contacto">Contacto / Chat</button>
 <button onclick="show('footer')" id="b-footer">Footer</button>
@@ -47,7 +49,7 @@ textarea{min-height:70px;resize:vertical}
 <div id="sec-hero" class="sec"><h2>Hero</h2><div class="card"><label>Badge</label><input id="hero-badge"><label>Título principal</label><textarea id="hero-titulo"></textarea><label>Descripción (puede tener HTML)</label><textarea id="hero-desc"></textarea><div class="grid2"><div><label>Texto botón</label><input id="hero-ctaTexto"></div><div><label>Link WhatsApp</label><input id="hero-ctaLink"></div></div><label>Nota debajo botón</label><input id="hero-ctaNota"></div></div>
 
 <div id="sec-carrusel" class="sec" style="display:none">
-<h2>📸 Carrusel - Dra. Victoria atendiendo</h2>
+<h2>📸 Carrusel de fotos</h2>
 <p class="small">Sube fotos de cualquier tamaño (incluso 5MB). Se comprimen automáticamente a 1200px y ~300KB en base64 para que la web vuele en celular.</p>
 <div id="carrusel-list"></div>
 <button class="btn btn-teal" onclick="addCarrusel()">+ Añadir foto al carrusel</button>
@@ -73,7 +75,7 @@ textarea{min-height:70px;resize:vertical}
 </div>
 
 <div id="sec-trust" class="sec" style="display:none"><h2>Barra de Confianza</h2><div id="trust-list"></div><button class="btn btn-ghost" onclick="addTrust()">+ Añadir item</button></div>
-<div id="sec-servicios" class="sec" style="display:none"><h2>Servicios</h2><div id="servicios-list"></div><button class="btn btn-teal" onclick="addServicio()">+ Añadir Servicio</button></div>
+<div id="sec-servicios" class="sec" style="display:none"><h2>Productos</h2><div id="servicios-list"></div><button class="btn btn-teal" onclick="addServicio()">+ Añadir producto</button></div>
 <div id="sec-nosotros" class="sec" style="display:none"><h2>Nosotros</h2><div class="card"><label>Eyebrow</label><input id="nos-eyebrow"><label>Título</label><textarea id="nos-titulo"></textarea><label>Descripción</label><textarea id="nos-desc"></textarea><h4 style="margin-top:12px">Valores</h4><div id="valores-list"></div><button class="btn btn-ghost" onclick="addValor()">+ Valor</button><div class="grid2" style="margin-top:12px"><div><label>Testimonio</label><textarea id="nos-test"></textarea></div><div><label>Autor testimonio</label><input id="nos-autor"></div></div></div></div>
 <div id="sec-contacto" class="sec" style="display:none"><h2>Contacto</h2><div class="card"><label>Título</label><textarea id="cont-titulo"></textarea><label>Descripción</label><textarea id="cont-desc"></textarea><div class="grid2"><div><label>Texto botón</label><input id="cont-ctaTexto"></div><div><label>Link botón</label><input id="cont-ctaLink"></div></div><label>Meta (horario)</label><input id="cont-meta"><h4 style="margin-top:12px">Chat burbujas</h4><div id="chat-list"></div><button class="btn btn-ghost" onclick="addChat()">+ Burbuja chat</button></div></div>
 <div id="sec-footer" class="sec" style="display:none"><h2>Footer</h2><div class="card"><label>Descripción</label><textarea id="foot-desc"></textarea><label>Texto servicios</label><textarea id="foot-serv"></textarea><label>Horario</label><textarea id="foot-hor"></textarea><label>Copy</label><input id="foot-copy"></div></div>
@@ -82,6 +84,38 @@ textarea{min-height:70px;resize:vertical}
 <input type="file" id="fileInput" accept=".json" style="display:none">
 <script>
 let data = null;
+
+const API='/api/publish', isLocal=['localhost','127.0.0.1'].includes(location.hostname);
+let PW=sessionStorage.getItem('bz_pw')||'';
+function toast(t){const e=document.getElementById('toast');e.textContent=t;e.style.display='block';clearTimeout(window._t);window._t=setTimeout(()=>e.style.display='none',6000);}
+async function api(body){try{const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});let j={};try{j=await r.json()}catch(e){}j.status=r.status;return j;}catch(e){return {ok:false,error:'Sin conexión con el servidor'}}}
+async function login(){
+  const u=document.getElementById('lg-user').value.trim(),p=document.getElementById('lg-pass').value,m=document.getElementById('lg-msg');m.textContent='';
+  let ok=false;
+  if(isLocal){ok=(u==='admin'&&p==='123123');if(!ok)m.textContent='Usuario o contraseña incorrectos';}
+  else{const j=await api({action:'login',user:u,password:p});ok=!!j.ok;if(!ok)m.textContent=j.status===404?'El servidor de publicación no está activo':(j.error||'Error');}
+  if(ok){PW=p;sessionStorage.setItem('bz_pw',p);document.getElementById('login').style.display='none';init();}
+}
+async function boot(){
+  if(isLocal){document.getElementById('login').style.display='grid';return;}
+  if(PW){const j=await api({action:'login',user:'admin',password:PW});if(j.ok){document.getElementById('login').style.display='none';return init();}}
+  document.getElementById('login').style.display='grid';
+}
+function salir(){sessionStorage.removeItem('bz_pw');location.reload();}
+async function publicar(){
+  if(isLocal){toast('Subir cambios solo funciona en la web publicada. Aquí usa "Descargar cambios".');return;}
+  if(!confirm('¿Publicar los cambios en la web?'))return;
+  toast('Subiendo cambios...');
+  const j=await api({action:'publish',user:'admin',password:PW,data});
+  toast(j.ok?'✅ Cambios enviados. En 1-2 minutos se verán en la web (Ctrl+F5).':'❌ '+(j.error||'Error al publicar (¿fotos muy pesadas? máx. ~4 MB en total)'));
+}
+async function cambiarClave(){
+  if(isLocal){toast('Cambia la contraseña desde la web publicada.');return;}
+  const n=prompt('Nueva contraseña (mínimo 6 caracteres):');if(!n)return;
+  if(n!==prompt('Repite la nueva contraseña:')){toast('Las contraseñas no coinciden');return;}
+  const j=await api({action:'password',user:'admin',password:PW,newPassword:n});
+  if(j.ok){PW=n;sessionStorage.setItem('bz_pw',n);toast('✅ Contraseña cambiada. En 1-2 minutos queda activa.');}else toast('❌ '+(j.error||'Error'));
+}
 function show(id){
   document.querySelectorAll('.sec').forEach(s=>s.style.display='none');
   document.querySelectorAll('.sidebar button').forEach(b=>b.classList.remove('active'));
@@ -89,7 +123,7 @@ function show(id){
   document.getElementById('b-'+id).classList.add('active');
 }
 async function init(){
-  const saved = localStorage.getItem('vv_admin_v3');
+  const saved = localStorage.getItem('bz_admin_v1');
   if(saved){ try{ data = JSON.parse(saved); }catch(e){} }
   if(!data){
     const res = await fetch('data.json'); data = await res.json();
@@ -109,9 +143,9 @@ function renderAll(){
   const cl = document.getElementById('carrusel-list'); cl.innerHTML='';
   data.carrusel.forEach((c,i)=>{
     const d=document.createElement('div'); d.className='card';
-    const hasImg = c.imagen && c.imagen.startsWith('data:image');
+    const hasImg = !!c.imagen;
     let sizeInfo = '';
-    if(hasImg){ const kb = Math.round((c.imagen.length*3/4)/1024); sizeInfo = `<span class="badge">${kb} KB comprimido</span>`; }
+    if(hasImg && c.imagen.startsWith('data:')){ const kb = Math.round((c.imagen.length*3/4)/1024); sizeInfo = `<span class="badge">${kb} KB comprimido</span>`; }
     d.innerHTML=`
       <div class="grid2">
         <div>
@@ -196,7 +230,7 @@ function renderAll(){
   document.getElementById('foot-hor').oninput = e=>{data.footer.horario=e.target.value;save()};
   document.getElementById('foot-copy').oninput = e=>{data.footer.copy=e.target.value;save()};
 }
-function save(){ localStorage.setItem('vv_admin_v3', JSON.stringify(data)); }
+function save(){ localStorage.setItem('bz_admin_v1', JSON.stringify(data)); }
 function renderFondoPreview(){
   const img = document.getElementById('fondo-preview');
   const src = data.config.fondoTransparente.imagen;
@@ -245,8 +279,8 @@ function moveCarrusel(i,dir){
   const tmp = data.carrusel[i]; data.carrusel[i]=data.carrusel[j]; data.carrusel[j]=tmp;
   renderAll(); save();
 }
-function addCarrusel(){ data.carrusel.push({id:Date.now().toString(),titulo:"Nueva foto",descripcion:"Dra. Victoria",imagen:"",activo:true}); renderAll(); save(); }
-function addServicio(){ data.servicios.push({icono:"🐾",titulo:"Nuevo Servicio",descripcion:"Descripción",activo:true}); renderAll(); save(); }
+function addCarrusel(){ data.carrusel.push({id:Date.now().toString(),titulo:"Nueva foto",descripcion:"Descripción",imagen:"",activo:true}); renderAll(); save(); }
+function addServicio(){ data.servicios.push({icono:"💧",titulo:"Nuevo producto",descripcion:"Descripción",activo:true}); renderAll(); save(); }
 function addTrust(){ data.trust.push({numero:"+",texto:"nuevo"}); renderAll(); save(); }
 function addValor(){ data.nosotros.valores.push({titulo:"Nuevo valor",descripcion:"Desc"}); renderAll(); save(); }
 function addChat(){ data.contacto.chat.push({texto:"Hola!",tipo:"bot"}); renderAll(); save(); }
@@ -266,7 +300,7 @@ document.getElementById('fileInput').addEventListener('change', e=>{
   };
   reader.readAsText(file);
 });
-init();
+boot();
 </script>
 </body>
 </html>

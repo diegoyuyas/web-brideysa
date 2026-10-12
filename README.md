@@ -1,16 +1,15 @@
-# Victoria Vásquez - Versión ORIGINAL editable
+# Brideysa - Agua de mesa y gas a domicilio
 
-Esta es tu primera versión IGUALITA, pero ahora lee data.json
+## Ver en local
+Doble clic en `iniciar_servidor.bat` -> http://localhost:8000 (admin: /portal_admin.html)
 
-## Uso:
-1. Doble clic en iniciar_servidor.bat -> abre http://localhost:8000
-2. Edita en tu portal_admin: Exportar JSON -> reemplaza data.json aquí
-3. Ctrl + F5 en el navegador para ver cambios
-4. git push para subir a GitHub Pages
+## Editar contenido
+1. Entra a `/portal_admin.html` (usuario `admin`, clave inicial `123123`; cámbiala con el botón 🔑).
+2. Edita y pulsa **🚀 Subir cambios** (se publica solo) o **Descargar cambios** (reemplaza `data.json` y haz `git push`).
 
-## Archivos:
-- index.html -> IGUAL que tu primera versión, solo con IDs para data.json
-- styles.css -> ORIGINAL intacto
-- main.js -> ORIGINAL + cargador de data.json
-- data.json -> TODO editable desde el admin
-- iniciar_servidor.bat -> para ver con F5
+## Configuración en Vercel (una sola vez)
+Project -> Settings -> Environment Variables:
+- `GITHUB_TOKEN` : token fine-grained del repo con permiso "Contents: Read and write"
+- `GITHUB_REPO`  : diegoyuyas/web-brideysa
+- `GITHUB_BRANCH`: main (opcional)
+Luego Redeploy.

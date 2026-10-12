@@ -1,5 +1,5 @@
 
-// Victoria Vasquez v3 - Carrusel + Fondo transparente
+// Brideysa - Carrusel + Fondo transparente
 (function(){
   window.__BRAND__ = window.__BRAND__ || {};
   function safe(fn,name){ try{ fn(); }catch(e){ console.warn('[safe] '+name, e); } }
@@ -81,12 +81,12 @@
       const res = await fetch('data.json?v=' + Date.now(), {cache: 'no-store'});
       if(!res.ok) throw new Error('data.json no encontrado');
       const data = await res.json();
-      console.log('[Victoria v3] data.json cargado', data);
+      console.log('[Brideysa] data.json cargado', data);
       renderFromData(data);
       initFondo(data);
       initCarrusel(data);
     }catch(e){
-      console.warn('[Victoria] No se pudo cargar data.json:', e);
+      console.warn('[Brideysa] No se pudo cargar data.json:', e);
     }
   }
 
@@ -188,14 +188,14 @@
     const next = document.getElementById('carousel-next');
     if(!track) return;
     const lista = (data.carrusel || []).filter(c=>c.activo!==false);
-    slides = lista.length ? lista : [{id:'ph', titulo:'Foto de la Dra. Victoria', descripcion:'Sube tus fotos desde el portal admin', imagen:'', activo:true}];
+    slides = lista.length ? lista : [{id:'ph', titulo:'Brideysa', descripcion:'Sube tus fotos desde el portal admin', imagen:'', activo:true}];
     
     track.innerHTML = slides.map(s=>{
-      const hasImg = s.imagen && s.imagen.startsWith('data:image');
+      const hasImg = !!s.imagen; const cls = s.imagen && !s.imagen.startsWith('data:') ? ' class="is-logo"' : '';
       if(hasImg){
-        return `<div class="carousel-slide"><img src="${s.imagen}" alt="${s.titulo||''}" loading="lazy"><div class="caption"><strong>${s.titulo||''}</strong><span>${s.descripcion||''}</span></div></div>`;
+        return `<div class="carousel-slide"><img${cls} src="${s.imagen}" alt="${s.titulo||''}" loading="lazy"><div class="caption"><strong>${s.titulo||''}</strong><span>${s.descripcion||''}</span></div></div>`;
       } else {
-        return `<div class="carousel-slide"><div class="placeholder"><img src="assets/img/logo.png" alt="Victoria"><div><strong>${s.titulo||'Agrega tu foto'}</strong><p style="font-size:13px;opacity:.6;margin-top:6px">${s.descripcion||'Desde el admin puedes subir fotos en base64'}</p></div></div></div>`;
+        return `<div class="carousel-slide"><div class="placeholder"><img src="assets/img/logo.png" alt="Brideysa"><div><strong>${s.titulo||'Agrega tu foto'}</strong><p style="font-size:13px;opacity:.6;margin-top:6px">${s.descripcion||'Desde el admin puedes subir fotos en base64'}</p></div></div></div>`;
       }
     }).join('');
 
