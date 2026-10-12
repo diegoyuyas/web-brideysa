@@ -2,9 +2,9 @@
   "hero": {
     "badge": "Delivery a domicilio • Agua y Gas",
     "titulo": "Agua pura y gas seguro, directo a tu puerta",
-    "descripcion": "En <strong>Brideysa</strong> te llevamos <strong>agua de mesa</strong> y <strong>balones de gas</strong> a domicilio. Pedidos rápidos por WhatsApp, entrega puntual y trato amable.",
+    "descripcion": "En <strong>Brideysa</strong> te llevamos <strong>agua de mesa</strong> y <strong>balones de gas</strong> a domicilio. Pedidos rápidos por WhatsApp, entrega puntual y trato amable.\nSolicita tu pedido ¡YA!",
     "ctaTexto": "Pedir por WhatsApp",
-    "ctaLink": "https://wa.me/51900000000?text=Hola%20Brideysa%2C%20quisiera%20hacer%20un%20pedido",
+    "ctaLink": "https://wa.me/957753205?text=Hola%20Brideysa%2C%20quisiera%20hacer%20un%20pedido",
     "ctaNota": "Respuesta en minutos • Lun - Dom"
   },
   "trust": [
@@ -111,7 +111,7 @@
   "config": {
     "fondoTransparente": {
       "activo": true,
-      "opacidad": 0.06,
+      "opacidad": 0.07,
       "imagen": "",
       "tipo": "logo"
     }
@@ -124,5 +124,6 @@
       "imagen": "assets/img/logo.png",
       "activo": true
     }
-  ]
+  ],
+  "secciones": []
 }
