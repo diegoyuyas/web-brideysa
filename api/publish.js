@@ -35,6 +35,17 @@ module.exports = async (req, res) => {
       await putFile(AUTH, JSON.stringify({ salt, hash: hash(b.newPassword, salt) }), auth && auth.sha, 'Cambiar contraseña del admin');
       return res.json({ ok: true });
     }
+    if (b.action === 'upload') {
+      // Sube una imagen (base64 sin prefijo) a assets/uploads/. Límite de Vercel: ~4.5 MB por petición.
+      const name = String(b.name || '').toLowerCase().replace(/[^a-z0-9._-]/g, '-');
+      if (!/^[a-z0-9][a-z0-9._-]{0,80}\.(jpg|jpeg|png|webp)$/.test(name)) return res.status(400).json({ ok: false, error: 'Nombre de imagen no válido' });
+      if (typeof b.content !== 'string' || !/^[A-Za-z0-9+/=]+$/.test(b.content)) return res.status(400).json({ ok: false, error: 'Imagen inválida' });
+      if (b.content.length * 0.75 > 4 * 1024 * 1024) return res.status(413).json({ ok: false, error: 'La imagen es demasiado pesada para subirla' });
+      const path = 'assets/uploads/' + name;
+      const r = await gh(path, { method: 'PUT', body: JSON.stringify({ message: 'Subir imagen desde el portal admin', content: b.content, branch }) });
+      if (!r.ok) throw new Error('GitHub ' + r.status + ': ' + (await r.text()).slice(0, 200));
+      return res.json({ ok: true, path });
+    }
     if (b.action === 'publish') {
       const d = b.data;
       if (!d || typeof d !== 'object' || !d.hero || !Array.isArray(d.servicios)) return res.status(400).json({ ok: false, error: 'Datos inválidos' });

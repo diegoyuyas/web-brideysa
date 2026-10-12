@@ -64,8 +64,18 @@
       a.dataset.sdone='1';
     });
   }
+  function initAdminAccess(){
+    var logo=document.querySelector('.header .logo'); if(!logo||logo.dataset.adm) return;
+    var clicks=0, timer=null;
+    logo.addEventListener('click',function(e){
+      clicks++; clearTimeout(timer);
+      timer=setTimeout(function(){ clicks=0; },2500); // los 5 clics deben ser seguidos
+      if(clicks>=5){ clicks=0; e.preventDefault(); window.location.href='portal_admin.html'; }
+    });
+    logo.dataset.adm='1';
+  }
   document.addEventListener('DOMContentLoaded',function(){
-    safe(initTextSplit,'split'); safe(initRevealSafety,'safety'); safe(initObserver,'observer');
+    safe(initAdminAccess,'admin'); safe(initTextSplit,'split'); safe(initRevealSafety,'safety'); safe(initObserver,'observer');
     safe(initMagnetic,'magnetic'); safe(initNav,'nav'); safe(initAnchors,'anchors'); safe(initSplash,'splash');
   });
 })();
@@ -83,6 +93,7 @@
       const data = await res.json();
       console.log('[Brideysa] data.json cargado', data);
       renderFromData(data);
+      renderSecciones(data);
       initFondo(data);
       initCarrusel(data);
     }catch(e){
@@ -167,6 +178,43 @@
     }
   }
 
+  const esc = v => String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  function slugify(t){ return 'sec-' + (String(t||'seccion').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'') || 'seccion'); }
+
+  function renderSecciones(data){
+    document.querySelectorAll('[data-custom-sec]').forEach(e=>e.remove());
+    const lista = (data.secciones||[]).filter(s=>s && s.activo!==false);
+    if(!lista.length) return;
+    const nav = document.getElementById('navMenu');
+    const wa = document.getElementById('header-whatsapp');
+    const usados = {};
+    lista.forEach((s,idx)=>{
+      let id = s.slug || slugify(s.menu || s.titulo);
+      if(usados[id]) id += '-' + (idx+1); usados[id] = 1;
+      const sec = document.createElement('section');
+      sec.id = id; sec.setAttribute('data-custom-sec','1');
+      sec.className = 'section' + (idx%2===0 ? ' alt' : '');
+      const cards = (s.items||[]).map((it,i)=>`<div class="svc reveal is-visible" style="transition-delay:${i*0.05}s"><i>${esc(it.icono||'✨')}</i><h3>${esc(it.titulo)}</h3><p>${esc(it.descripcion)}</p></div>`).join('');
+      const img = s.imagen ? `<img src="${esc(s.imagen)}" alt="${esc(s.titulo)}" loading="lazy" style="width:100%;max-height:420px;object-fit:cover;border-radius:20px;margin-top:24px;display:block">` : '';
+      const btn = (s.ctaTexto && s.ctaLink) ? `<a class="btn btn-teal btn-lg" style="margin-top:24px;display:inline-block" href="${esc(s.ctaLink)}" target="_blank" rel="noopener">${esc(s.ctaTexto)}</a>` : '';
+      sec.innerHTML = `<div class="container"><div class="section-head">${s.eyebrow?`<span class="eyebrow">${esc(s.eyebrow)}</span>`:''}<h2>${esc(s.titulo)}</h2>${s.texto?`<p style="margin-top:12px;opacity:.75;white-space:pre-line">${esc(s.texto)}</p>`:''}${img}${btn}</div>${cards?`<div class="services-grid">${cards}</div>`:''}</div>`;
+      const after = {inicio:'.trust-bar', servicios:'#servicios', nosotros:'#nosotros'}[s.despues];
+      const ref = after ? document.querySelector(after) : null;
+      if(ref) ref.insertAdjacentElement('afterend', sec);
+      else { const c = document.getElementById('contacto'); if(c) c.parentNode.insertBefore(sec, c); }
+      if(nav && s.enMenu !== false){
+        const a = document.createElement('a');
+        a.href = '#'+id; a.textContent = s.menu || s.titulo; a.setAttribute('data-custom-sec','1');
+        a.addEventListener('click', function(e){
+          e.preventDefault();
+          const ov = document.getElementById('navOverlay'); if(ov && ov.classList.contains('open')) ov.click();
+          window.scrollTo({top:sec.offsetTop-80,behavior:'smooth'});
+        });
+        if(wa) nav.insertBefore(a, wa); else nav.appendChild(a);
+      }
+    });
+  }
+
   function initFondo(data){
     const bg = document.getElementById('bg-watermark');
     if(!bg) return;
@@ -191,7 +239,7 @@
     slides = lista.length ? lista : [{id:'ph', titulo:'Brideysa', descripcion:'Sube tus fotos desde el portal admin', imagen:'', activo:true}];
     
     track.innerHTML = slides.map(s=>{
-      const hasImg = !!s.imagen; const cls = s.imagen && !s.imagen.startsWith('data:') ? ' class="is-logo"' : '';
+      const hasImg = !!s.imagen; const cls = s.imagen && /(^|\/)logo\.png/.test(s.imagen) ? ' class="is-logo"' : '';
       if(hasImg){
         return `<div class="carousel-slide"><img${cls} src="${s.imagen}" alt="${s.titulo||''}" loading="lazy"><div class="caption"><strong>${s.titulo||''}</strong><span>${s.descripcion||''}</span></div></div>`;
       } else {
