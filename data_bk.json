@@ -1,0 +1,133 @@
+{
+  "hero": {
+    "badge": "Delivery a domicilio • Agua y Gas",
+    "titulo": "Agua pura y gas seguro, directo a tu puerta",
+    "descripcion": "En <strong>Brideysa</strong> te llevamos <strong>agua de mesa</strong> y <strong>balones de gas</strong> a domicilio. Pedidos rápidos por WhatsApp, entrega puntual y trato amable.\nSolicita tu pedido ¡YA!",
+    "ctaTexto": "Pedir por WhatsApp",
+    "ctaLink": "https://wa.me/957753205?text=Hola%20Brideysa%2C%20quisiera%20hacer%20un%20pedido",
+    "ctaNota": "Respuesta en minutos • Lun - Dom"
+  },
+  "trust": [
+    {
+      "numero": "100%",
+      "texto": "agua purificada"
+    },
+    {
+      "numero": "A domicilio",
+      "texto": "entrega rápida y segura"
+    },
+    {
+      "numero": "7 días",
+      "texto": "atención por WhatsApp"
+    }
+  ],
+  "servicios": [
+    {
+      "icono": "💧",
+      "titulo": "Bidón de agua de mesa",
+      "descripcion": "Bidón de 20 L, agua purificada y fresca para tu hogar u oficina.",
+      "activo": true
+    },
+    {
+      "icono": "🧴",
+      "titulo": "Agua en botellas",
+      "descripcion": "Paquetes de botellas para el hogar, eventos y reuniones.",
+      "activo": true
+    },
+    {
+      "icono": "🔥",
+      "titulo": "Balones de gas",
+      "descripcion": "Gas doméstico con balones revisados y sellados.",
+      "activo": true
+    },
+    {
+      "icono": "🔄",
+      "titulo": "Cambio de balón",
+      "descripcion": "Recogemos tu balón vacío y te dejamos uno lleno.",
+      "activo": true
+    },
+    {
+      "icono": "🚚",
+      "titulo": "Delivery a domicilio",
+      "descripcion": "Pide por WhatsApp y recíbelo en la puerta de tu casa.",
+      "activo": true
+    },
+    {
+      "icono": "🏪",
+      "titulo": "Pedidos para negocios",
+      "descripcion": "Entregas programadas para restaurantes, tiendas y oficinas.",
+      "activo": true
+    }
+  ],
+  "nosotros": {
+    "eyebrow": "¿Por qué Brideysa?",
+    "titulo": "Pureza y frescura en cada gota, seguridad en cada balón.",
+    "descripcion": "Somos un servicio de delivery de agua de mesa y balones de gas. Llevamos lo esencial a tu hogar con puntualidad, cuidado y trato cercano.",
+    "valores": [
+      {
+        "titulo": "Agua purificada",
+        "descripcion": "Calidad y frescura en cada bidón y botella."
+      },
+      {
+        "titulo": "Entrega puntual",
+        "descripcion": "Pides por WhatsApp y llegamos a tu puerta."
+      },
+      {
+        "titulo": "Seguridad",
+        "descripcion": "Balones de gas revisados y manipulados con cuidado."
+      }
+    ],
+    "testimonio": "Pedí por WhatsApp y en poco tiempo ya tenía el agua y el gas en casa. Muy puntuales.",
+    "testimonioAutor": "Cliente frecuente"
+  },
+  "contacto": {
+    "titulo": "¿Se te acabó el agua o el gas?",
+    "descripcion": "Escríbenos por WhatsApp y recibe tu pedido a domicilio. Te respondemos en minutos.",
+    "ctaTexto": "Hacer mi pedido",
+    "meta": "Lun - Dom 8am - 7pm • Pedidos por WhatsApp",
+    "chat": [
+      {
+        "texto": "¡Hola! 💧 ¿Qué necesitas hoy?",
+        "tipo": "bot"
+      },
+      {
+        "texto": "Un bidón de agua y un balón de gas, por favor",
+        "tipo": "me"
+      },
+      {
+        "texto": "¡Listo! Te lo llevamos en breve 🚚",
+        "tipo": "bot"
+      }
+    ]
+  },
+  "footer": {
+    "descripcion": "Agua de mesa y balones de gas a domicilio\nPureza y frescura en cada gota 💧",
+    "serviciosTexto": "Agua de mesa | Botellas | Balones de gas | Delivery a domicilio",
+    "horario": "Atención: todos los días.\nLun - Dom 8am - 7pm\nPedidos: WhatsApp",
+    "copy": "© 2026 Brideysa — Agua de mesa y gas a domicilio."
+  },
+  "whatsapp": "51900000000",
+  "config": {
+    "fondoTransparente": {
+      "activo": true,
+      "opacidad": 0.07,
+      "imagen": "",
+      "tipo": "logo"
+    }
+  },
+  "carrusel": [
+    {
+      "id": "logo",
+      "titulo": "Brideysa — Agua purificada",
+      "descripcion": "Pureza y frescura en cada gota",
+      "imagen": "assets/img/logo.png",
+      "activo": true
+    }
+  ],
+<<<<<<< HEAD
+  "secciones": []
+=======
+  "whatsappMensaje": "Hola Brideysa, quisiera hacer un pedido",
+  "whatsappFlotante": true
+>>>>>>> 275f234 (etapa 1,2,3,4)
+}
