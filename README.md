@@ -21,3 +21,6 @@ Luego Redeploy.
 ## Imágenes y secciones nuevas
 - Las fotos (carrusel y secciones) aceptan hasta 5 MB; se optimizan y se guardan en `assets/uploads/` vía GitHub.
 - En el portal, `➕ Secciones nuevas` crea secciones extra con su enlace en el menú.
+
+- **WhatsApp:** se configura una sola vez en el portal (💬 WhatsApp) y alimenta todos los botones, el flotante y los "Solicitar" de Productos.
+- **Productos:** cada uno admite foto opcional (hasta 5 MB) con zoom y encuadre editables; sin foto se muestra el emoji.

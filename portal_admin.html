@@ -24,6 +24,7 @@ textarea{min-height:70px;resize:vertical}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .svc-item{border:1px dashed var(--line);padding:12px;border-radius:12px;margin-bottom:10px;background:#FFFBF5}
 .small{font-size:12px;opacity:.6}
+.svc-frame{width:100%;max-width:320px;aspect-ratio:4/3;overflow:hidden;border-radius:12px;border:1px solid var(--line);background:#fff;margin-top:8px}.svc-frame img{width:100%;height:100%;object-fit:cover;display:block}.enc{display:grid;grid-template-columns:90px 1fr;gap:6px 10px;align-items:center;max-width:320px;margin-top:8px;font-size:12px}.enc input{padding:0}
 .preview-img{width:100%;height:160px;object-fit:cover;border-radius:10px;border:1px solid var(--line);background:#fff}
 .badge{display:inline-flex;padding:4px 8px;border-radius:999px;background:#FFF2E6;border:1px solid var(--line);font-size:11px;font-weight:700}
 @media(max-width:900px){.layout{grid-template-columns:1fr}.sidebar{display:flex;gap:8px;overflow-x:auto}.sidebar button{white-space:nowrap}}
@@ -37,18 +38,46 @@ textarea{min-height:70px;resize:vertical}
 <div class="sidebar">
 <h3>Secciones</h3>
 <button class="active" onclick="show('hero')" id="b-hero">Inicio / Hero</button>
+<button onclick="show('whatsapp')" id="b-whatsapp">💬 WhatsApp</button>
+<button onclick="show('logo')" id="b-logo">🖼️ Logo</button>
 <button onclick="show('carrusel')" id="b-carrusel">📸 Carrusel</button>
 <button onclick="show('fondo')" id="b-fondo">🎨 Fondo Transparente</button>
 <button onclick="show('trust')" id="b-trust">Barra Confianza</button>
 <button onclick="show('servicios')" id="b-servicios">Productos</button>
 <button onclick="show('nosotros')" id="b-nosotros">Nosotros</button>
+<button onclick="show('ubicanos')" id="b-ubicanos">📍 Ubícanos</button>
 <button onclick="show('contacto')" id="b-contacto">Contacto / Chat</button>
 <button onclick="show('secciones')" id="b-secciones">➕ Secciones nuevas</button>
 <button onclick="show('footer')" id="b-footer">Footer</button>
 <p class="small" style="margin-top:20px">Fotos: hasta 5 MB cada una. Se optimizan solas y se guardan en GitHub al seleccionarlas.</p>
 </div>
 <div class="main">
-<div id="sec-hero" class="sec"><h2>Hero</h2><div class="card"><label>Badge</label><input id="hero-badge"><label>Título principal</label><textarea id="hero-titulo"></textarea><label>Descripción (puede tener HTML)</label><textarea id="hero-desc"></textarea><div class="grid2"><div><label>Texto botón</label><input id="hero-ctaTexto"></div><div><label>Link WhatsApp</label><input id="hero-ctaLink"></div></div><label>Nota debajo botón</label><input id="hero-ctaNota"></div></div>
+<div id="sec-logo" class="sec" style="display:none"><h2>🖼️ Logo</h2><div class="card">
+<p class="small">Sube tu nuevo logo (PNG con fondo transparente recomendado, hasta 5 MB). Se actualiza en el menú, la pantalla de carga, Nosotros, el footer, el fondo y el icono de la pestaña. La imagen que sale al compartir el enlace en redes (og-image.jpg) no cambia.</p>
+<div style="background:#FFF8FB;border:1px dashed var(--line);border-radius:12px;padding:16px;text-align:center"><img id="logo-preview" src="assets/img/logo.png" alt="Logo" style="max-width:180px;max-height:180px"></div>
+<label>Subir nuevo logo</label><input type="file" accept="image/png,image/jpeg,image/webp" onchange="handleLogo(this)">
+<button class="btn btn-ghost" style="margin-top:8px" onclick="restaurarLogo()">Restaurar logo original</button>
+</div></div>
+<div id="sec-ubicanos" class="sec" style="display:none"><h2>📍 Ubícanos</h2><div class="card">
+<label>Mostrar sección</label><select id="ubi-activo"><option value="true">Sí</option><option value="false">No</option></select>
+<label>Etiqueta pequeña</label><input id="ubi-eyebrow">
+<label>Título</label><input id="ubi-titulo">
+<label>Texto</label><textarea id="ubi-texto"></textarea>
+<label>Dirección (se usa para el mapa y el botón)</label><input id="ubi-direccion" placeholder="Av. Principal 123, Lima, Perú">
+<label>Código "Insertar un mapa" de Google Maps (opcional, para el punto exacto)</label><textarea id="ubi-embed" placeholder='En Google Maps: Compartir > Insertar un mapa > Copiar HTML. Pégalo aquí.'></textarea>
+<label>Enlace del botón (opcional)</label><input id="ubi-enlace" placeholder="Si lo dejas vacío, abre la ruta hacia la dirección">
+<label>Texto del botón</label><input id="ubi-btn">
+<label>Foto al costado del mapa (opcional, hasta 5 MB)</label><input type="file" accept="image/*" onchange="handleUbiFoto(this)">
+<div id="ubi-foto-box"></div>
+</div></div>
+<div id="sec-whatsapp" class="sec" style="display:none"><h2>💬 WhatsApp</h2><div class="card">
+<p class="small">Configura el número una sola vez: se aplica al botón del menú, el botón principal, el de Contacto, el botón flotante y los botones "Solicitar" de cada producto.</p>
+<label>Número de WhatsApp (con código de país)</label><input id="wa-num" inputmode="numeric" placeholder="51987654321">
+<p class="small">Perú: si escribes 9 dígitos (ej. 987654321) se agrega el 51 automáticamente. Enlace resultante: <span id="wa-preview"></span></p>
+<label>Mensaje predeterminado (botones generales)</label><input id="wa-msg" placeholder="Hola Brideysa, quisiera hacer un pedido">
+<label>Botón flotante de WhatsApp</label><select id="wa-float"><option value="true">Mostrar</option><option value="false">Ocultar</option></select>
+</div></div>
+<div id="sec-hero" class="sec"><h2>Hero</h2><div class="card"><label>Badge</label><input id="hero-badge"><label>Título principal</label><textarea id="hero-titulo"></textarea><label>Descripción (puede tener HTML)</label><textarea id="hero-desc"></textarea><div class="grid2"><div><label>Texto botón</label><input id="hero-ctaTexto"></div><div class="small" style="align-self:end">El link usa el número de la sección 💬 WhatsApp.</div></div><label>Nota debajo botón</label><input id="hero-ctaNota"></div></div>
 
 <div id="sec-carrusel" class="sec" style="display:none">
 <h2>📸 Carrusel de fotos</h2>
@@ -79,7 +108,7 @@ textarea{min-height:70px;resize:vertical}
 <div id="sec-trust" class="sec" style="display:none"><h2>Barra de Confianza</h2><div id="trust-list"></div><button class="btn btn-ghost" onclick="addTrust()">+ Añadir item</button></div>
 <div id="sec-servicios" class="sec" style="display:none"><h2>Productos</h2><div id="servicios-list"></div><button class="btn btn-teal" onclick="addServicio()">+ Añadir producto</button></div>
 <div id="sec-nosotros" class="sec" style="display:none"><h2>Nosotros</h2><div class="card"><label>Eyebrow</label><input id="nos-eyebrow"><label>Título</label><textarea id="nos-titulo"></textarea><label>Descripción</label><textarea id="nos-desc"></textarea><h4 style="margin-top:12px">Valores</h4><div id="valores-list"></div><button class="btn btn-ghost" onclick="addValor()">+ Valor</button><div class="grid2" style="margin-top:12px"><div><label>Testimonio</label><textarea id="nos-test"></textarea></div><div><label>Autor testimonio</label><input id="nos-autor"></div></div></div></div>
-<div id="sec-contacto" class="sec" style="display:none"><h2>Contacto</h2><div class="card"><label>Título</label><textarea id="cont-titulo"></textarea><label>Descripción</label><textarea id="cont-desc"></textarea><div class="grid2"><div><label>Texto botón</label><input id="cont-ctaTexto"></div><div><label>Link botón</label><input id="cont-ctaLink"></div></div><label>Meta (horario)</label><input id="cont-meta"><h4 style="margin-top:12px">Chat burbujas</h4><div id="chat-list"></div><button class="btn btn-ghost" onclick="addChat()">+ Burbuja chat</button></div></div>
+<div id="sec-contacto" class="sec" style="display:none"><h2>Contacto</h2><div class="card"><label>Título</label><textarea id="cont-titulo"></textarea><label>Descripción</label><textarea id="cont-desc"></textarea><div class="grid2"><div><label>Texto botón</label><input id="cont-ctaTexto"></div><div class="small" style="align-self:end">El link usa el número de la sección 💬 WhatsApp.</div></div><label>Meta (horario)</label><input id="cont-meta"><h4 style="margin-top:12px">Chat burbujas</h4><div id="chat-list"></div><button class="btn btn-ghost" onclick="addChat()">+ Burbuja chat</button></div></div>
 <div id="sec-secciones" class="sec" style="display:none">
 <h2>➕ Secciones nuevas</h2>
 <p class="small">Crea secciones adicionales (ej. Preguntas frecuentes, Zonas de reparto, Promociones). Aparecen en el menú de la web y puedes elegir en qué lugar de la página van.</p>
@@ -141,6 +170,8 @@ async function init(){
   if(!data.config.fondoTransparente) data.config.fondoTransparente={activo:true,opacidad:0.07,imagen:""};
   if(!data.carrusel) data.carrusel=[];
   if(!Array.isArray(data.secciones)) data.secciones=[];
+  data.ubicacion=Object.assign({activo:true,eyebrow:'Visítanos',titulo:'Ubícanos',texto:'Encuentra nuestro punto de atención y llega fácil con Google Maps.',direccion:'Lima, Perú',mapaEmbed:'',enlace:'',btnTexto:'Clic para saber cómo llegar',imagen:''},data.ubicacion||{});
+  if(!data.config) data.config={};
   renderAll();
 }
 function renderAll(){
@@ -148,7 +179,6 @@ function renderAll(){
   document.getElementById('hero-titulo').value = data.hero.titulo||'';
   document.getElementById('hero-desc').value = data.hero.descripcion||'';
   document.getElementById('hero-ctaTexto').value = data.hero.ctaTexto||'';
-  document.getElementById('hero-ctaLink').value = data.hero.ctaLink||'';
   document.getElementById('hero-ctaNota').value = data.hero.ctaNota||'';
   const cl = document.getElementById('carrusel-list'); cl.innerHTML='';
   data.carrusel.forEach((c,i)=>{
@@ -190,7 +220,16 @@ function renderAll(){
   const sl = document.getElementById('servicios-list'); sl.innerHTML='';
   data.servicios.forEach((s,i)=>{
     const d=document.createElement('div'); d.className='svc-item';
-    d.innerHTML=`<div class="grid2"><div><label>Icono (emoji)</label><input value="${s.icono||''}" oninput="data.servicios[${i}].icono=this.value;save()"></div><div><label>Activo</label><select onchange="data.servicios[${i}].activo=this.value==='true';save()"><option value="true" ${s.activo!==false?'selected':''}>Sí</option><option value="false" ${s.activo===false?'selected':''}>No</option></select></div></div><label>Título</label><input value="${(s.titulo||'').replace(/"/g,'&quot;')}" oninput="data.servicios[${i}].titulo=this.value;save()"><label>Descripción</label><textarea oninput="data.servicios[${i}].descripcion=this.value;save()">${s.descripcion||''}</textarea><button class="btn btn-ghost" onclick="data.servicios.splice(${i},1);renderAll();save()">Eliminar servicio</button>`;
+    const kb = s.imagen ? (s.imagen.startsWith('data:') ? Math.round(s.imagen.length*0.75/1024) : sizes[s.imagen]) : 0;
+    const foto = s.imagen ? `
+      <div class="svc-frame"><img id="svcimg-${i}" src="${ea(imgSrc(s.imagen))}" style="${encStyle(s)}"></div>
+      <div class="enc">
+        <span>Zoom</span><input type="range" min="1" max="3" step="0.05" value="${num(s.zoom,1,1,3)}" oninput="setEnc(${i},'zoom',this.value)">
+        <span>Horizontal</span><input type="range" min="0" max="100" step="1" value="${num(s.posX,50,0,100)}" oninput="setEnc(${i},'posX',this.value)">
+        <span>Vertical</span><input type="range" min="0" max="100" step="1" value="${num(s.posY,50,0,100)}" oninput="setEnc(${i},'posY',this.value)">
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;align-items:center"><button class="btn btn-ghost" onclick="resetEnc(${i})">Restablecer encuadre</button><button class="btn btn-ghost" style="color:red;border-color:red" onclick="quitarFotoServicio(${i})">Quitar foto</button>${kb?`<span class="badge">${kb} KB optimizada</span>`:''}</div>` : '';
+    d.innerHTML=`<div class="grid2"><div><label>Icono (emoji, se usa si no hay foto)</label><input value="${ea(s.icono)}" oninput="data.servicios[${i}].icono=this.value;save()"></div><div><label>Activo</label><select onchange="data.servicios[${i}].activo=this.value==='true';save()"><option value="true" ${s.activo!==false?'selected':''}>Sí</option><option value="false" ${s.activo===false?'selected':''}>No</option></select></div></div><label>Título</label><input value="${ea(s.titulo)}" oninput="data.servicios[${i}].titulo=this.value;save()"><label>Descripción</label><textarea oninput="data.servicios[${i}].descripcion=this.value;save()">${ea(s.descripcion)}</textarea><label>${s.imagen?'Reemplazar foto':'Foto (opcional)'} — hasta 5 MB</label><input type="file" accept="image/*" onchange="handleServicioFoto(this,${i})">${foto}<div style="margin-top:10px"><button class="btn btn-ghost" onclick="data.servicios.splice(${i},1);renderAll();save()">Eliminar servicio</button></div>`;
     sl.appendChild(d);
   });
   document.getElementById('nos-eyebrow').value = data.nosotros.eyebrow||'';
@@ -207,7 +246,6 @@ function renderAll(){
   document.getElementById('cont-titulo').value = data.contacto.titulo||'';
   document.getElementById('cont-desc').value = data.contacto.descripcion||'';
   document.getElementById('cont-ctaTexto').value = data.contacto.ctaTexto||'';
-  document.getElementById('cont-ctaLink').value = data.contacto.ctaLink||'';
   document.getElementById('cont-meta').value = data.contacto.meta||'';
   const chatL = document.getElementById('chat-list'); chatL.innerHTML='';
   data.contacto.chat.forEach((c,i)=>{
@@ -220,11 +258,13 @@ function renderAll(){
   document.getElementById('foot-hor').value = data.footer.horario||'';
   document.getElementById('foot-copy').value = data.footer.copy||'';
   renderSecciones();
+  renderWhatsapp();
+  renderUbicacionAdmin();
+  renderLogoAdmin();
   document.getElementById('hero-badge').oninput = e=>{data.hero.badge=e.target.value;save()};
   document.getElementById('hero-titulo').oninput = e=>{data.hero.titulo=e.target.value;save()};
   document.getElementById('hero-desc').oninput = e=>{data.hero.descripcion=e.target.value;save()};
   document.getElementById('hero-ctaTexto').oninput = e=>{data.hero.ctaTexto=e.target.value;save()};
-  document.getElementById('hero-ctaLink').oninput = e=>{data.hero.ctaLink=e.target.value;save()};
   document.getElementById('hero-ctaNota').oninput = e=>{data.hero.ctaNota=e.target.value;save()};
   document.getElementById('nos-eyebrow').oninput = e=>{data.nosotros.eyebrow=e.target.value;save()};
   document.getElementById('nos-titulo').oninput = e=>{data.nosotros.titulo=e.target.value;save()};
@@ -234,7 +274,6 @@ function renderAll(){
   document.getElementById('cont-titulo').oninput = e=>{data.contacto.titulo=e.target.value;save()};
   document.getElementById('cont-desc').oninput = e=>{data.contacto.descripcion=e.target.value;save()};
   document.getElementById('cont-ctaTexto').oninput = e=>{data.contacto.ctaTexto=e.target.value;save()};
-  document.getElementById('cont-ctaLink').oninput = e=>{data.contacto.ctaLink=e.target.value;save()};
   document.getElementById('cont-meta').oninput = e=>{data.contacto.meta=e.target.value;save()};
   document.getElementById('foot-desc').oninput = e=>{data.footer.descripcion=e.target.value;save()};
   document.getElementById('foot-serv').oninput = e=>{data.footer.serviciosTexto=e.target.value;save()};
@@ -253,13 +292,14 @@ function renderFondoPreview(){
 const MAX_MB=5, previews={}, sizes={};
 const imgSrc=p=>previews[p]||p;
 const ea=v=>String(v==null?'':v).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-function prepararImagen(file,maxW,maxBytes){
+function prepararImagen(file,maxW,maxBytes,opts){
   return new Promise((ok,fail)=>{
     const url=URL.createObjectURL(file), img=new Image();
     img.onerror=()=>{URL.revokeObjectURL(url);fail(new Error('No se pudo leer la imagen'))};
     img.onload=()=>{
       URL.revokeObjectURL(url);
       let w=img.width,h=img.height; if(w>maxW){h=Math.round(h*maxW/w);w=maxW;}
+      if(opts&&opts.png){ for(let k=0;k<8;k++){ const c=document.createElement('canvas'); c.width=w; c.height=h; c.getContext('2d').drawImage(img,0,0,w,h); const d=c.toDataURL('image/png'); if(d.length*0.75<=maxBytes) return ok(d); w=Math.round(w*0.8); h=Math.round(h*0.8); } return fail(new Error('No se pudo reducir el logo lo suficiente')); }
       for(let intento=0;intento<6;intento++){
         const c=document.createElement('canvas'); c.width=w; c.height=h;
         const x=c.getContext('2d'); x.fillStyle='#fff'; x.fillRect(0,0,w,h); x.drawImage(img,0,0,w,h);
@@ -276,7 +316,7 @@ function prepararImagen(file,maxW,maxBytes){
 }
 async function guardarImagen(dataUrl,prefijo){
   if(isLocal) return dataUrl; // en local se guarda en base64 dentro de data.json
-  const name=prefijo+'-'+Date.now()+'.jpg';
+  const name=prefijo+'-'+Date.now()+(dataUrl.startsWith('data:image/png')?'.png':'.jpg');
   toast('Subiendo imagen a GitHub...');
   const j=await api({action:'upload',user:'admin',password:PW,name,content:dataUrl.split(',')[1]});
   if(!j.ok) throw new Error(j.error||'No se pudo subir la imagen');
@@ -346,6 +386,51 @@ function renderSecciones(){
     l.appendChild(d);
   });
 }
+const num=(v,d,min,max)=>{v=parseFloat(v);return isFinite(v)?Math.min(max,Math.max(min,v)):d};
+function encStyle(s){const x=num(s.posX,50,0,100),y=num(s.posY,50,0,100),z=num(s.zoom,1,1,3);return `object-position:${x}% ${y}%;transform:scale(${z});transform-origin:${x}% ${y}%`;}
+function setEnc(i,k,v){data.servicios[i][k]=parseFloat(v);const im=document.getElementById('svcimg-'+i);if(im)im.setAttribute('style',encStyle(data.servicios[i]));save();}
+function resetEnc(i){const s=data.servicios[i];delete s.zoom;delete s.posX;delete s.posY;renderAll();save();}
+function quitarFotoServicio(i){const s=data.servicios[i];s.imagen='';delete s.zoom;delete s.posX;delete s.posY;renderAll();save();}
+async function handleServicioFoto(input,i){
+  const file=input.files[0]; if(!file||!validarArchivo(file,input)) return;
+  toast('Procesando imagen...');
+  try{
+    const url=await prepararImagen(file,1200,2.8*1024*1024);
+    const s=data.servicios[i]; s.imagen=await guardarImagen(url,'producto'); delete s.zoom;delete s.posX;delete s.posY;
+    renderAll(); save(); toast('✅ Foto lista');
+  }catch(e){ toast('❌ '+e.message); }
+}
+function renderWhatsapp(){
+  const n=document.getElementById('wa-num'),m=document.getElementById('wa-msg'),f=document.getElementById('wa-float'); if(!n) return;
+  n.value=data.whatsapp||''; m.value=data.whatsappMensaje||''; f.value=data.whatsappFlotante===false?'false':'true';
+  const prev=()=>{document.getElementById('wa-preview').textContent=data.whatsapp?('https://wa.me/'+data.whatsapp):'(escribe tu número)';};
+  n.oninput=e=>{data.whatsapp=e.target.value.replace(/\D/g,'').slice(0,15);e.target.value=data.whatsapp;prev();save()};
+  n.onchange=e=>{if(/^9\d{8}$/.test(data.whatsapp)){data.whatsapp='51'+data.whatsapp;e.target.value=data.whatsapp;prev();save()}};
+  m.oninput=e=>{data.whatsappMensaje=e.target.value;save()};
+  f.onchange=e=>{data.whatsappFlotante=e.target.value==='true';save()};
+  prev();
+}
+function renderUbicacionAdmin(){
+  const u=data.ubicacion, g=id=>document.getElementById(id); if(!g('ubi-titulo')) return;
+  g('ubi-activo').value=u.activo===false?'false':'true'; g('ubi-eyebrow').value=u.eyebrow||''; g('ubi-titulo').value=u.titulo||''; g('ubi-texto').value=u.texto||'';
+  g('ubi-direccion').value=u.direccion||''; g('ubi-embed').value=u.mapaEmbed||''; g('ubi-enlace').value=u.enlace||''; g('ubi-btn').value=u.btnTexto||'';
+  g('ubi-activo').onchange=e=>{u.activo=e.target.value==='true';save()};
+  [['ubi-eyebrow','eyebrow'],['ubi-titulo','titulo'],['ubi-texto','texto'],['ubi-direccion','direccion'],['ubi-embed','mapaEmbed'],['ubi-enlace','enlace'],['ubi-btn','btnTexto']].forEach(([id,k])=>{g(id).oninput=e=>{u[k]=e.target.value;save()}});
+  const kb=u.imagen?(u.imagen.startsWith('data:')?Math.round(u.imagen.length*0.75/1024):sizes[u.imagen]):0;
+  g('ubi-foto-box').innerHTML=u.imagen?`<img src="${ea(imgSrc(u.imagen))}" class="preview-img" style="margin-top:8px;max-width:320px"><div style="display:flex;gap:6px;align-items:center;margin-top:6px"><button class="btn btn-ghost" style="color:red;border-color:red" onclick="data.ubicacion.imagen='';renderAll();save()">Quitar foto</button>${kb?`<span class="badge">${kb} KB optimizada</span>`:''}</div>`:'';
+}
+async function handleUbiFoto(input){
+  const file=input.files[0]; if(!file||!validarArchivo(file,input)) return;
+  toast('Procesando imagen...');
+  try{ const url=await prepararImagen(file,1400,2.8*1024*1024); data.ubicacion.imagen=await guardarImagen(url,'ubicanos'); renderAll(); save(); toast('✅ Foto lista'); }catch(e){ toast('❌ '+e.message); }
+}
+function renderLogoAdmin(){ const im=document.getElementById('logo-preview'); if(im) im.src=imgSrc(data.config.logo||'assets/img/logo.png'); }
+async function handleLogo(input){
+  const file=input.files[0]; if(!file||!validarArchivo(file,input)) return;
+  toast('Procesando logo...');
+  try{ const url=await prepararImagen(file,800,2.8*1024*1024,{png:true}); data.config.logo=await guardarImagen(url,'logo'); renderAll(); save(); toast('✅ Logo listo. Pulsa Publicar para aplicarlo en la web.'); }catch(e){ toast('❌ '+e.message); }
+}
+function restaurarLogo(){ if(confirm('¿Volver al logo original?')){ delete data.config.logo; renderAll(); save(); } }
 function addServicio(){ data.servicios.push({icono:"💧",titulo:"Nuevo producto",descripcion:"Descripción",activo:true}); renderAll(); save(); }
 function addTrust(){ data.trust.push({numero:"+",texto:"nuevo"}); renderAll(); save(); }
 function addValor(){ data.nosotros.valores.push({titulo:"Nuevo valor",descripcion:"Desc"}); renderAll(); save(); }

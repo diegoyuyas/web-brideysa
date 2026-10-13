@@ -84,7 +84,6 @@
     "titulo": "¿Se te acabó el agua o el gas?",
     "descripcion": "Escríbenos por WhatsApp y recibe tu pedido a domicilio. Te respondemos en minutos.",
     "ctaTexto": "Hacer mi pedido",
-    "ctaLink": "https://wa.me/51900000000?text=Hola%20Brideysa%2C%20quisiera%20hacer%20un%20pedido",
     "meta": "Lun - Dom 8am - 7pm • Pedidos por WhatsApp",
     "chat": [
       {
@@ -125,5 +124,10 @@
       "activo": true
     }
   ],
+<<<<<<< HEAD
   "secciones": []
+=======
+  "whatsappMensaje": "Hola Brideysa, quisiera hacer un pedido",
+  "whatsappFlotante": true
+>>>>>>> 275f234 (etapa 1,2,3,4)
 }

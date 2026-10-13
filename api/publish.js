@@ -49,6 +49,8 @@ module.exports = async (req, res) => {
     if (b.action === 'publish') {
       const d = b.data;
       if (!d || typeof d !== 'object' || !d.hero || !Array.isArray(d.servicios)) return res.status(400).json({ ok: false, error: 'Datos inválidos' });
+      if (d.whatsapp !== undefined) d.whatsapp = String(d.whatsapp).replace(/\D/g, '').slice(0, 15);
+      if (d.whatsappMensaje !== undefined) d.whatsappMensaje = String(d.whatsappMensaje).slice(0, 300);
       const cur = await getFile('data.json');
       await putFile('data.json', JSON.stringify(d, null, 2), cur && cur.sha, 'Actualizar contenido desde el portal admin');
       return res.json({ ok: true });
